@@ -8,14 +8,13 @@ namespace Extensions {
 namespace HttpFilters {
 namespace BasicAuth {
 
-static const std::string PREFIX{"Basic "};
-static const Http::LowerCaseString WWW_AUTHENTICATE{"WWW-Authenticate"};
+static const std::string& PREFIX() { CONSTRUCT_ON_FIRST_USE(std::string, "Basic "); }
 
 Http::FilterHeadersStatus BasicAuthFilter::decodeHeaders(Http::HeaderMap& headers, bool) {
   if (!authenticated(headers)) {
     Http::Utility::sendLocalReply(
         [&](Http::HeaderMapPtr&& headers, bool end_stream) -> void {
-          headers->addReferenceKey(WWW_AUTHENTICATE, config_->realm_);
+          headers->addReferenceKey(config_->www_authenticate_, config_->realm_);
           decoder_callbacks_->encodeHeaders(std::move(headers), end_stream);
         },
         [&](Buffer::Instance& data, bool end_stream) -> void {
@@ -33,11 +32,11 @@ bool BasicAuthFilter::authenticated(const Http::HeaderMap& headers) {
   }
 
   absl::string_view value(headers.Authorization()->value().c_str());
-  if (!absl::StartsWith(value, PREFIX)) {
+  if (!absl::StartsWith(value, PREFIX())) {
     return false;
   }
 
-  absl::string_view encoded(value.substr(PREFIX.size(), value.size() - PREFIX.size()));
+  absl::string_view encoded(value.substr(PREFIX().size(), value.size() - PREFIX().size()));
   return config_->encoded_.size() == encoded.size() && absl::StartsWith(config_->encoded_, encoded);
 }
 

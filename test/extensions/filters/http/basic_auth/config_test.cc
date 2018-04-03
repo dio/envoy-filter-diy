@@ -8,11 +8,20 @@ namespace HttpFilters {
 namespace BasicAuth {
 
 TEST(BasicAuthConfigFactoryTest, Config) {
+  const std::string yaml = R"EOF(
+      username: envoy
+      password: awesome
+      realm: envoy world
+    )EOF";
+
+  diy::BasicAuth proto_config;
+  MessageUtil::loadFromYaml(yaml, proto_config);
+
   NiceMock<Server::Configuration::MockFactoryContext> context;
   BasicAuthFilterConfigFactory factory;
 
   Server::Configuration::HttpFilterFactoryCb cb =
-      factory.createFilterFactoryFromProto(Envoy::ProtobufWkt::Empty(), "stats", context);
+      factory.createFilterFactoryFromProto(proto_config, "stats", context);
 
   Http::MockFilterChainFactoryCallbacks filter_callback;
   EXPECT_CALL(filter_callback, addStreamDecoderFilter(testing::_));

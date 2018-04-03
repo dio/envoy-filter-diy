@@ -3,6 +3,8 @@
 #include "envoy/registry/registry.h"
 #include "envoy/server/filter_config.h"
 
+#include "source/extensions/filters/http/basic_auth/config.pb.validate.h"
+
 namespace Envoy {
 namespace Extensions {
 namespace HttpFilters {
@@ -15,11 +17,11 @@ static const std::string& BASIC_AUTH_FILTER() {
 class BasicAuthFilterConfigFactory : public Server::Configuration::NamedHttpFilterConfigFactory {
 public:
   Server::Configuration::HttpFilterFactoryCb
-  createFilterFactoryFromProto(const Protobuf::Message&, const std::string&,
+  createFilterFactoryFromProto(const Protobuf::Message& proto, const std::string&,
                                Server::Configuration::FactoryContext&) override;
 
   ProtobufTypes::MessagePtr createEmptyConfigProto() override {
-    return ProtobufTypes::MessagePtr{new Envoy::ProtobufWkt::Empty()};
+    return ProtobufTypes::MessagePtr{new diy::BasicAuth()};
   }
 
   std::string name() override { return BASIC_AUTH_FILTER(); }

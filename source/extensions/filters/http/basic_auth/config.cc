@@ -7,11 +7,14 @@ namespace HttpFilters {
 namespace BasicAuth {
 
 Server::Configuration::HttpFilterFactoryCb
-BasicAuthFilterConfigFactory::createFilterFactoryFromProto(const Protobuf::Message&,
+BasicAuthFilterConfigFactory::createFilterFactoryFromProto(const Protobuf::Message& proto,
                                                            const std::string&,
                                                            Server::Configuration::FactoryContext&) {
-  BasicAuthFilterConfigPtr config = std::make_shared<BasicAuthFilterConfig>(
-      BasicAuthFilterConfig("envoy", "awesome", "envoy world"));
+  const diy::BasicAuth& proto_config =
+      Envoy::MessageUtil::downcastAndValidate<const diy::BasicAuth&>(proto);
+
+  BasicAuthFilterConfigPtr config =
+      std::make_shared<BasicAuthFilterConfig>(BasicAuthFilterConfig(proto_config));
 
   return [config](Http::FilterChainFactoryCallbacks& callbacks) -> void {
     callbacks.addStreamDecoderFilter(
