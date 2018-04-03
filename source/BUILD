@@ -9,6 +9,7 @@ envoy_cc_binary(
     name = "envoy",
     repository = "@envoy",
     deps = [
+        "//source/extensions/filters/http/basic_auth:config",
         "@envoy//source/exe:envoy_main_entry_lib",
     ],
 )
