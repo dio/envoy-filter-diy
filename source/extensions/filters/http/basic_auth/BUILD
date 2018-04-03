@@ -14,3 +14,14 @@ envoy_cc_library(
         "@envoy//source/exe:envoy_common_lib",
     ],
 )
+
+envoy_cc_library(
+    name = "config",
+    srcs = ["config.cc"],
+    hdrs = ["config.h"],
+    repository = "@envoy",
+    deps = [
+        ":basic_auth",
+        "@envoy//source/exe:envoy_common_lib",
+    ],
+)

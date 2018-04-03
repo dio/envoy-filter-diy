@@ -14,3 +14,13 @@ envoy_cc_test(
         "@envoy//test/mocks/http:http_mocks",
     ],
 )
+
+envoy_cc_test(
+    name = "config_test",
+    srcs = ["config_test.cc"],
+    repository = "@envoy",
+    deps = [
+        "//source/extensions/filters/http/basic_auth:config",
+        "@envoy//test/mocks/server:server_mocks",
+    ],
+)
