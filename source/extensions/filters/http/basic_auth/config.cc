@@ -1,3 +1,5 @@
+#include "envoy/registry/registry.h"
+
 #include "extensions/filters/http/basic_auth/config.h"
 #include "extensions/filters/http/basic_auth/basic_auth.h"
 
@@ -6,13 +8,9 @@ namespace Extensions {
 namespace HttpFilters {
 namespace BasicAuth {
 
-Server::Configuration::HttpFilterFactoryCb
-BasicAuthFilterConfigFactory::createFilterFactoryFromProto(const Protobuf::Message& proto,
-                                                           const std::string&,
-                                                           Server::Configuration::FactoryContext&) {
-  const diy::BasicAuth& proto_config =
-      Envoy::MessageUtil::downcastAndValidate<const diy::BasicAuth&>(proto);
-
+Http::FilterFactoryCb BasicAuthFilterConfigFactory::createFilterFactoryFromProtoTyped(
+    const diy::BasicAuth& proto_config, const std::string&,
+    Server::Configuration::FactoryContext&) {
   BasicAuthFilterConfigPtr config =
       std::make_shared<BasicAuthFilterConfig>(BasicAuthFilterConfig(proto_config));
 

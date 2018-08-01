@@ -1,6 +1,6 @@
 workspace(name = "envoy_diy_filter")
 
-ENVOY_SHA = "5fcc829e7800a77ea2703a1ead3f25915aae6d61"
+ENVOY_SHA = "da3c1eaf813b968009af20ef5b5462e6eaebdfdb"
 
 http_archive(
     name = "envoy",

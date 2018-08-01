@@ -20,9 +20,7 @@ TEST(BasicAuthConfigFactoryTest, Config) {
   NiceMock<Server::Configuration::MockFactoryContext> context;
   BasicAuthFilterConfigFactory factory;
 
-  Server::Configuration::HttpFilterFactoryCb cb =
-      factory.createFilterFactoryFromProto(proto_config, "stats", context);
-
+  Http::FilterFactoryCb cb = factory.createFilterFactoryFromProto(proto_config, "stats", context);
   Http::MockFilterChainFactoryCallbacks filter_callback;
   EXPECT_CALL(filter_callback, addStreamDecoderFilter(testing::_));
   cb(filter_callback);

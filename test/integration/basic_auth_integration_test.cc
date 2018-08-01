@@ -32,12 +32,12 @@ protected:
     if (wait_for_upstream_response) {
       sendRequestAndWaitForResponse(request_headers, 0, expected_response_headers, 0);
     } else {
-      codec_client_->makeHeaderOnlyRequest(request_headers, *response_);
+      auto response = codec_client_->makeHeaderOnlyRequest(request_headers);
       // and don't wait for upstream response
-      response_->waitForEndStream();
+      response->waitForEndStream();
+      EXPECT_TRUE(response->complete());
+      compareHeaders(response->headers(), expected_response_headers);
     }
-    EXPECT_TRUE(response_->complete());
-    compareHeaders(response_->headers(), expected_response_headers);
   }
 
   void compareHeaders(Http::TestHeaderMapImpl&& response_headers,

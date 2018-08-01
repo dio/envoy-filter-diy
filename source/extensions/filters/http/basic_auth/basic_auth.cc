@@ -13,6 +13,7 @@ static const std::string& PREFIX() { CONSTRUCT_ON_FIRST_USE(std::string, "Basic 
 Http::FilterHeadersStatus BasicAuthFilter::decodeHeaders(Http::HeaderMap& headers, bool) {
   if (!authenticated(headers)) {
     Http::Utility::sendLocalReply(
+        false,
         [&](Http::HeaderMapPtr&& headers, bool end_stream) -> void {
           headers->addReferenceKey(config_->www_authenticate_, config_->realm_);
           decoder_callbacks_->encodeHeaders(std::move(headers), end_stream);
