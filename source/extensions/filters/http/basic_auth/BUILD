@@ -24,6 +24,7 @@ envoy_cc_library(
     repository = "@envoy",
     deps = [
         ":basic_auth",
+        "//source/extensions/filters/http:well_known_names",
         "@envoy//source/exe:envoy_common_lib",
     ],
 )

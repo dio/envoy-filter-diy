@@ -1,21 +1,22 @@
 #pragma once
 
+#include "source/extensions/filters/http/basic_auth/config.pb.h"
 #include "source/extensions/filters/http/basic_auth/config.pb.validate.h"
 
 #include "extensions/filters/http/common/factory_base.h"
+#include "extensions/filters/http/extended_well_known_names.h"
 
 namespace Envoy {
 namespace Extensions {
 namespace HttpFilters {
 namespace BasicAuth {
 
-static const std::string& BASIC_AUTH_FILTER() {
-  CONSTRUCT_ON_FIRST_USE(std::string, "diy.basic_auth");
-}
-
+/**
+ * Config registration for the basic auth filter. @see NamedHttpFilterConfigFactory.
+ */
 class BasicAuthFilterConfigFactory : public Common::FactoryBase<diy::BasicAuth> {
 public:
-  BasicAuthFilterConfigFactory() : FactoryBase(BASIC_AUTH_FILTER()) {}
+  BasicAuthFilterConfigFactory() : FactoryBase(ExtendedHttpFilterNames::get().BasicAuth) {}
 
 private:
   Http::FilterFactoryCb
