@@ -4,7 +4,7 @@
 #include "source/extensions/filters/http/basic_auth/config.pb.validate.h"
 
 #include "extensions/filters/http/common/factory_base.h"
-#include "extensions/filters/http/extended_well_known_names.h"
+#include "extensions/filters/http/well_known_names.h"
 
 namespace Envoy {
 namespace Extensions {

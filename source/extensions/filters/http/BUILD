@@ -9,7 +9,7 @@ load(
 
 envoy_cc_library(
     name = "well_known_names",
-    hdrs = ["extended_well_known_names.h"],
+    hdrs = ["well_known_names.h"],
     repository = "@envoy",
     deps = [
         "@envoy//source/common/config:well_known_names",
