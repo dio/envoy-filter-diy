@@ -1,6 +1,6 @@
-workspace(name = "envoy_diy_filter")
+workspace(name = "envoy_filter_diy")
 
-ENVOY_SHA = "da3c1eaf813b968009af20ef5b5462e6eaebdfdb"
+ENVOY_SHA = "87553968ec2258919d986e9a76512b0009d01575"
 
 http_archive(
     name = "envoy",
@@ -8,7 +8,7 @@ http_archive(
     url = "https://github.com/envoyproxy/envoy/archive/" + ENVOY_SHA + ".zip",
 )
 
-load("@envoy//bazel:repositories.bzl", "envoy_dependencies")
+load("@envoy//bazel:repositories.bzl", "GO_VERSION", "envoy_dependencies")
 load("@envoy//bazel:cc_configure.bzl", "cc_configure")
 
 envoy_dependencies()
@@ -19,15 +19,8 @@ load("@envoy_api//bazel:repositories.bzl", "api_dependencies")
 
 api_dependencies()
 
-load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
-load("@com_lyft_protoc_gen_validate//bazel:go_proto_library.bzl", "go_proto_repositories")
-
-go_proto_repositories(shared = 0)
+load("@io_bazel_rules_go//go:def.bzl", "go_register_toolchains", "go_rules_dependencies")
 
 go_rules_dependencies()
 
-go_register_toolchains()
-
-load("@io_bazel_rules_go//proto:def.bzl", "proto_register_toolchains")
-
-proto_register_toolchains()
+go_register_toolchains(go_version = GO_VERSION)

@@ -21,7 +21,7 @@ Http::FilterHeadersStatus BasicAuthFilter::decodeHeaders(Http::HeaderMap& header
         [&](Buffer::Instance& data, bool end_stream) -> void {
           decoder_callbacks_->encodeData(data, end_stream);
         },
-        false, Http::Code::Unauthorized, config_->message_);
+        false, Http::Code::Unauthorized, config_->message_, absl::nullopt);
     return Http::FilterHeadersStatus::StopIteration;
   }
   return Http::FilterHeadersStatus::Continue;
