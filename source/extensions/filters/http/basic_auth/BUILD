@@ -15,7 +15,9 @@ envoy_cc_library(
     repository = "@envoy",
     deps = [
         ":config_proto_cc",
-        "@envoy//source/exe:envoy_common_lib",
+        "@envoy//include/envoy/http:filter_interface",
+        "@envoy//source/common/common:base64_lib",
+        "@envoy//source/common/http:utility_lib",
     ],
 )
 
@@ -27,7 +29,8 @@ envoy_cc_library(
     deps = [
         ":basic_auth_filter_lib",
         "//source/extensions/filters/http:well_known_names",
-        "@envoy//source/exe:envoy_common_lib",
+        "@envoy//include/envoy/registry",
+        "@envoy//source/extensions/filters/http/common:factory_base_lib",
     ],
 )
 
