@@ -15,13 +15,13 @@ Http::FilterHeadersStatus BasicAuthFilter::decodeHeaders(Http::HeaderMap& header
     Http::Utility::sendLocalReply(
         false,
         [&](Http::HeaderMapPtr&& headers, bool end_stream) -> void {
-          headers->addReferenceKey(config_->www_authenticate_, config_->realm_);
+          headers->addReferenceKey(config_->wwwAuthenticate(), config_->realm());
           decoder_callbacks_->encodeHeaders(std::move(headers), end_stream);
         },
         [&](Buffer::Instance& data, bool end_stream) -> void {
           decoder_callbacks_->encodeData(data, end_stream);
         },
-        false, Http::Code::Unauthorized, config_->message_, absl::nullopt);
+        false, Http::Code::Unauthorized, config_->message(), absl::nullopt);
     return Http::FilterHeadersStatus::StopIteration;
   }
   return Http::FilterHeadersStatus::Continue;
@@ -38,7 +38,8 @@ bool BasicAuthFilter::authenticated(const Http::HeaderMap& headers) {
   }
 
   absl::string_view encoded(value.substr(PREFIX().size(), value.size() - PREFIX().size()));
-  return config_->encoded_.size() == encoded.size() && absl::StartsWith(config_->encoded_, encoded);
+  const std::string& config_encoded_ = config_->encoded();
+  return config_encoded_.size() == encoded.size() && absl::StartsWith(config_encoded_, encoded);
 }
 
 } // namespace BasicAuth
