@@ -1,6 +1,8 @@
-#include "extensions/filters/http/basic_auth/basic_auth.h"
+#include "extensions/filters/http/basic_auth/basic_auth_filter.h"
 
 #include "test/mocks/http/mocks.h"
+#include "test/mocks/runtime/mocks.h"
+#include "test/mocks/stats/mocks.h"
 
 namespace Envoy {
 namespace Extensions {
@@ -20,8 +22,8 @@ protected:
     diy::BasicAuth proto_config;
     MessageUtil::loadFromYaml(yaml, proto_config);
 
-    config_.reset(new BasicAuthFilterConfig(proto_config));
-    filter_.reset(new BasicAuthFilter(config_));
+    config_.reset(new BasicAuthFilterConfig(proto_config, "test.", stats_, runtime_));
+    filter_ = std::make_unique<BasicAuthFilter>(config_);
     filter_->setDecoderFilterCallbacks(callbacks_);
   }
 
@@ -39,7 +41,9 @@ protected:
 
   testing::NiceMock<Http::MockStreamDecoderFilterCallbacks> callbacks_;
   std::unique_ptr<BasicAuthFilter> filter_;
-  BasicAuthFilterConfigPtr config_;
+  BasicAuthFilterConfigSharedPtr config_;
+  Stats::IsolatedStoreImpl stats_;
+  NiceMock<Runtime::MockLoader> runtime_;
 };
 
 TEST_F(BasicAuthFilterTest, UnauthorizedRequestWithoutAuthorizationHeader) {

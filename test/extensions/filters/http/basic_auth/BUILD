@@ -10,7 +10,7 @@ envoy_cc_test(
     srcs = ["basic_auth_test.cc"],
     repository = "@envoy",
     deps = [
-        "//source/extensions/filters/http/basic_auth",
+        "//source/extensions/filters/http/basic_auth:basic_auth_filter_lib",
         "@envoy//test/mocks/http:http_mocks",
     ],
 )
