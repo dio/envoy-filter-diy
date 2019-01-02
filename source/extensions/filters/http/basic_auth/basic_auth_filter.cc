@@ -1,4 +1,4 @@
-#include "extensions/filters/http/basic_auth/basic_auth.h"
+#include "extensions/filters/http/basic_auth/basic_auth_filter.h"
 
 #include "absl/strings/match.h"
 #include "common/http/utility.h"

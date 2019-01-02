@@ -1,4 +1,4 @@
-#include "extensions/filters/http/basic_auth/basic_auth.h"
+#include "extensions/filters/http/basic_auth/basic_auth_filter.h"
 
 #include "test/mocks/http/mocks.h"
 

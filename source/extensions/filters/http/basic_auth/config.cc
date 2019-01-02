@@ -1,7 +1,7 @@
 #include "envoy/registry/registry.h"
 
 #include "extensions/filters/http/basic_auth/config.h"
-#include "extensions/filters/http/basic_auth/basic_auth.h"
+#include "extensions/filters/http/basic_auth/basic_auth_filter.h"
 
 namespace Envoy {
 namespace Extensions {
