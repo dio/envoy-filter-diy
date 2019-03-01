@@ -1,6 +1,8 @@
 workspace(name = "envoy_filter_diy")
 
-ENVOY_SHA = "87553968ec2258919d986e9a76512b0009d01575"
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+ENVOY_SHA = "718682f22bdb548624df076813208660fb928188"
 
 http_archive(
     name = "envoy",
@@ -12,6 +14,10 @@ load("@envoy//bazel:repositories.bzl", "GO_VERSION", "envoy_dependencies")
 load("@envoy//bazel:cc_configure.bzl", "cc_configure")
 
 envoy_dependencies()
+
+load("@rules_foreign_cc//:workspace_definitions.bzl", "rules_foreign_cc_dependencies")
+
+rules_foreign_cc_dependencies()
 
 cc_configure()
 
